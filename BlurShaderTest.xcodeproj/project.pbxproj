@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		934AA2CD179BEFC200E55A0B /* GaussianBlurVertexShader.vs in Sources */ = {isa = PBXBuildFile; fileRef = 934AA2CC179BEFC200E55A0B /* GaussianBlurVertexShader.vs */; };
+		934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Sources */ = {isa = PBXBuildFile; fileRef = 934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */; };
 		9393D5A4179AE73B004C6234 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A3179AE73B004C6234 /* QuartzCore.framework */; };
 		9393D5A6179AE73B004C6234 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A5179AE73B004C6234 /* OpenGLES.framework */; };
 		9393D5A8179AE73B004C6234 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A7179AE73B004C6234 /* OpenAL.framework */; };
@@ -145,6 +147,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		934AA2CC179BEFC200E55A0B /* GaussianBlurVertexShader.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = GaussianBlurVertexShader.vs; sourceTree = "<group>"; };
+		934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = GaussianBlurFragmentShader.fs; sourceTree = "<group>"; };
 		9393D5A0179AE73B004C6234 /* BlurShaderTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlurShaderTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9393D5A3179AE73B004C6234 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9393D5A5179AE73B004C6234 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -451,6 +455,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		934AA2CB179BEFA000E55A0B /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				934AA2CC179BEFC200E55A0B /* GaussianBlurVertexShader.vs */,
+				934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
 		9393D597179AE73A004C6234 = {
 			isa = PBXGroup;
 			children = (
@@ -503,6 +516,7 @@
 		9393D5B8179AE73B004C6234 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				934AA2CB179BEFA000E55A0B /* Shaders */,
 				9393D5B9179AE73B004C6234 /* Default.png */,
 				9393D5BB179AE73B004C6234 /* Default@2x.png */,
 				9393D5BD179AE73B004C6234 /* Default-568h@2x.png */,
@@ -1078,6 +1092,8 @@
 				9393D755179AE80F004C6234 /* BlurredSprite.m in Sources */,
 				9393D759179AE84A004C6234 /* CCGLProgram+GAFExtensions.m in Sources */,
 				9393D75C179AEE86004C6234 /* BlurTextureConverter.m in Sources */,
+				934AA2CD179BEFC200E55A0B /* GaussianBlurVertexShader.vs in Sources */,
+				934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1183,6 +1199,7 @@
 				9393D752179AE73E004C6234 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

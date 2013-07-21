@@ -24,6 +24,8 @@
 @property (nonatomic, retain) CCTexture2D *initialTexture;
 @property (nonatomic, assign) CGRect rect;
 
+@property (nonatomic, retain) NSMutableDictionary *vertexShaderUniforms;
+
 @end
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -37,10 +39,21 @@
 #pragma mark -
 #pragma mark Initialization & Release
 
+- (BlurTextureConverter *)sharedConverter
+{
+    static dispatch_once_t once;
+    static BlurTextureConverter *instance = nil;
+    _dispatch_once(&once, ^{
+        instance = [[BlurTextureConverter alloc] init];
+    });
+    return instance;
+}
+
 - (id)init
 {
     if ((self = [super init]))
     {
+        self.vertexShaderUniforms = [NSMutableDictionary dictionary];
     }
     return nil;
 }
@@ -58,7 +71,7 @@
     CCRenderTexture *rTexture1 = [CCRenderTexture renderTextureWithWidth:self.rect.size.width height:self.rect.size.height];
     CCRenderTexture *rTexture2 = [CCRenderTexture renderTextureWithWidth:self.rect.size.width height:self.rect.size.height];
     
-    
+    // Load and cache shaders§
     
     return nil;
 }
@@ -66,93 +79,49 @@
 #pragma mark -
 #pragma mark Private methods
 
-- (CCGLProgram *)programForVerticalBlur
+- (CCGLProgram *)programForGaussianBlurShader
 {
-    CCGLProgram *program = [[CCShaderCache sharedShaderCache] programForKey:kGAFBlurredSpriteVerticalBlurShaderProgramCacheKey];
+    static NSString * const kGausianBlurShaderCacheKey = @"GaussianBlurShader";
+    
+    CCGLProgram *program = [[CCShaderCache sharedShaderCache] programForKey:kGausianBlurShaderCacheKey];
     if (program == nil)
     {
-        program = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureColor_vert
-                                              fragmentShaderFilename:kBlurredSpriteVerticalBlurShaderFilename];
+        program = [[CCGLProgram alloc] initWithVertexShaderFilename:@"GaussianBlurVertexShader.vs"
+                                             fragmentShaderFilename:@"GaussianBlurFragmentShader.fs"];
         
         if (program != nil)
         {
-            [program addAttribute:kCCAttributeNamePosition index:kCCVertexAttrib_Position];
-            [program addAttribute:kCCAttributeNameColor index:kCCVertexAttrib_Color];
-            [program addAttribute:kCCAttributeNameTexCoord index:kCCVertexAttrib_TexCoords];
+            [program addAttribute:@"position" index:kCCVertexAttrib_Position];
+            [program addAttribute:@"inputTextureCoordinate" index:kCCVertexAttrib_TexCoords];
             
             [program link];
             [program updateUniforms];
             
             CHECK_GL_ERROR_DEBUG();
             
-            [[CCShaderCache sharedShaderCache] addProgram:program forKey:kGAFBlurredSpriteVerticalBlurShaderProgramCacheKey];
+            [[CCShaderCache sharedShaderCache] addProgram:program forKey:kGausianBlurShaderCacheKey];
             [program release];
         }
         else
         {
-            CCLOGWARN(@"Cannot load program for kGAFBlurredSpriteVerticalBlurShaderProgramCacheKey.");
-            [self release];
+            CCLOGWARN(@"Cannot load program for %@.", kGausianBlurShaderCacheKey);
             return nil;
         }
     }
     
     [program use];
     
-    _vertShader_kernelSizeUniformLocation = (GLint)glGetUniformLocation(program->_program, "u_matrixRowSize");
-    _vertShader_blurDotSizeUniformLocation = (GLint)glGetUniformLocation(program->_program, "dotSize");
-    _vertShader_kernelValuesUniformLocation = (GLint)glGetUniformLocation(program->_program, "u_matrixRowValues");
+    GLint texelWidthOffset = (GLint)glGetUniformLocation(program->_program, "texelWidthOffset");
+    GLint texelHeightOffset = (GLint)glGetUniformLocation(program->_program, "texelHeightOffset");
     
-    if (_vertShader_kernelSizeUniformLocation <= 0 ||
-        _vertShader_blurDotSizeUniformLocation <= 0 ||
-        _vertShader_kernelValuesUniformLocation <= 0)
+    if (texelWidthOffset > 0 && texelHeightOffset > 0)
     {
-        CCLOGWARN(@"Cannot get uniforms for kGAFBlurredSpriteVerticalBlurShaderProgramCacheKey");
+        self.vertexShaderUniforms[@"texelWidthOffset"] = @(texelWidthOffset);
+        self.vertexShaderUniforms[@"texelHeightOffset"] = @(texelHeightOffset);
     }
-    
-    return program;
-}
-
-- (CCGLProgram *)programForHorizontalBlur
-{
-    CCGLProgram *program = [[CCShaderCache sharedShaderCache] programForKey:kGAFBlurredSpriteHorizontalBlurShaderProgramCacheKey];
-    if (program == nil)
+    else
     {
-        program = [[CCGLProgram alloc] initWithVertexShaderByteArray:ccPositionTextureColor_vert
-                                              fragmentShaderFilename:kBlurredSpriteHorizontalBlurShaderFilename];
-        
-        if (program != nil)
-        {
-            [program addAttribute:kCCAttributeNamePosition index:kCCVertexAttrib_Position];
-            [program addAttribute:kCCAttributeNameColor index:kCCVertexAttrib_Color];
-            [program addAttribute:kCCAttributeNameTexCoord index:kCCVertexAttrib_TexCoords];
-            
-            [program link];
-            [program updateUniforms];
-            
-            CHECK_GL_ERROR_DEBUG();
-            
-            [[CCShaderCache sharedShaderCache] addProgram:program forKey:kGAFBlurredSpriteHorizontalBlurShaderProgramCacheKey];
-            [program release];
-        }
-        else
-        {
-			CCLOGWARN(@"Cannot load program for kGAFBlurredSpriteHorizontalBlurShaderProgramCacheKey.");
-            [self release];
-            return nil;
-        }
-    }
-    
-    [program use];
-    
-    _horzShader_kernelSizeUniformLocation = (GLint)glGetUniformLocation(program->_program, "u_matrixRowSize");
-    _horzShader_blurDotSizeUniformLocation = (GLint)glGetUniformLocation(program->_program, "dotSize");
-    _horzShader_kernelValuesUniformLocation = (GLint)glGetUniformLocation(program->_program, "u_matrixRowValues");
-    
-    if (_horzShader_kernelSizeUniformLocation <= 0 ||
-        _horzShader_blurDotSizeUniformLocation <= 0 ||
-        _horzShader_kernelValuesUniformLocation <= 0)
-    {
-        CCLOGWARN(@"Cannot get uniforms for kGAFBlurredSpriteHorizontalBlurShaderProgramCacheKey");
+        CCLOGWARN(@"Cannot get uniforms for %@", kGausianBlurShaderCacheKey);
     }
     
     return program;
