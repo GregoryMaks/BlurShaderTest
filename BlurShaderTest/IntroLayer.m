@@ -8,7 +8,7 @@
 
 // Import the interfaces
 #import "IntroLayer.h"
-#import "BlurTextureConverter.h"
+#import "GAFTextureEffectsConverter.h"
 
 #pragma mark - IntroLayer
 
@@ -37,19 +37,23 @@
 		// ask director for the window size
 		//CGSize size = [[CCDirector sharedDirector] winSize];
 
-        CGImageRef image = [[UIImage imageNamed:@"Default.png"] CGImage];
+        CCLayerColor *colorLayer = [[CCLayerColor alloc] initWithColor:ccc4(128, 128, 128, 255)];
+        [self addChild:colorLayer];
+        
+        CGImageRef image = [[UIImage imageNamed:@"Test.png"] CGImage];
         CCTexture2D *tex = [[CCTexture2D alloc] initWithCGImage:image resolutionType:kCCResolutioniPad];
         
         CCSprite *sprite1 = [CCSprite spriteWithTexture:tex];
         sprite1.position = ccp(160, 768/2);
         [self addChild:sprite1];
         
-        BlurTextureConverter *converter = [BlurTextureConverter sharedConverter];
+        GAFTextureEffectsConverter *converter = [GAFTextureEffectsConverter sharedConverter];
         for (int a = 0; a < 1; a ++)
         {
-            CCRenderTexture *resultTex = [converter convertTexture:tex
-                                                              rect:CGRectMake(0, 0, tex.contentSize.width, tex.contentSize.height)
-                                                        blurRadius:1];
+            CCRenderTexture *resultTex = [converter gaussianBlurredTextureFromTexture:tex
+                                                                                 rect:CGRectMake(0, 0, tex.contentSize.width, tex.contentSize.height)
+                                                                          blurRadiusX:2
+                                                                          blurRadiusY:2];
             if (resultTex != nil)
             {
                 CCSprite *sprite2 = [CCSprite spriteWithTexture:resultTex.sprite.texture];

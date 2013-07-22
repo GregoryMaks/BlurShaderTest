@@ -1,17 +1,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  BlurTextureConverter.m
-//  BlurShaderTest
-//
-//  Created by Gregory Maksyuk on 7/20/13.
-//  Copyright 2013 Catalyst Apps. All rights reserved.
+//  GAFTextureEffectsConverter.m
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Imports
 
-#import "BlurTextureConverter.h"
+#import "GAFTextureEffectsConverter.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Constants
@@ -19,10 +15,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Private interface
 
-@interface BlurTextureConverter ()
-
-@property (nonatomic, retain) CCTexture2D *initialTexture;
-@property (nonatomic, assign) CGRect rect;
+@interface GAFTextureEffectsConverter ()
 
 @property (nonatomic, retain) NSMutableDictionary *vertexShaderUniforms;
 
@@ -31,7 +24,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Implementation
 
-@implementation BlurTextureConverter
+@implementation GAFTextureEffectsConverter
 
 #pragma mark -
 #pragma mark Properties
@@ -39,10 +32,10 @@
 #pragma mark -
 #pragma mark Initialization & Release
 
-+ (BlurTextureConverter *)sharedConverter
++ (GAFTextureEffectsConverter *)sharedConverter
 {
     static dispatch_once_t once;
-    static BlurTextureConverter *instance = nil;
+    static id instance = nil;
     _dispatch_once(&once, ^{
         instance = [[self alloc] init];
     });
@@ -60,74 +53,99 @@
 
 - (void)dealloc
 {
+    [_vertexShaderUniforms release];
     [super dealloc];
 }
 
 #pragma mark -
-#pragma mark Public methods
+#pragma mark Public methodsя
 
-- (CCRenderTexture *)convertTexture:(CCTexture2D *)aTexture rect:(CGRect)rect blurRadius:(CGFloat)aBlurRadius;
+- (CCRenderTexture *)gaussianBlurredTextureFromTexture:(CCTexture2D *)aTexture
+                                                  rect:(CGRect)rect
+                                           blurRadiusX:(CGFloat)aBlurRadiusX
+                                           blurRadiusY:(CGFloat)aBlurRadiusY
 {
-    CCRenderTexture *rTexture1 = [CCRenderTexture renderTextureWithWidth:rect.size.width height:rect.size.height];
-    CCRenderTexture *rTexture2 = [CCRenderTexture renderTextureWithWidth:rect.size.width height:rect.size.height];
+    const int kGaussianKernelSize = 9;
     
-    NSTimeInterval time = 0;
-    CAPTURE_TIME(time);
+    CGSize rTextureSize = CGSizeMake(rect.size.width + 2 * (kGaussianKernelSize / 2) * aBlurRadiusX,
+                                     rect.size.height + 2 * (kGaussianKernelSize / 2) * aBlurRadiusY);
+    
+    CCRenderTexture *rTexture1 = [CCRenderTexture renderTextureWithWidth:rTextureSize.width height:rTextureSize.height];
+    CCRenderTexture *rTexture2 = [CCRenderTexture renderTextureWithWidth:rTextureSize.width height:rTextureSize.height];
+    
+    //NSTimeInterval time = 0;
+    //CAPTURE_TIME(time);
     
     // Loading shader
     CCGLProgram *gaussianShader_vert = [self programForGaussianBlurShader_vertical];
     CCGLProgram *gaussianShader_horz = [self programForGaussianBlurShader_horizontal];
-    /*if (gaussianShader_vert == nil || gaussianShader_horz == nil)
+    if (gaussianShader_vert == nil || gaussianShader_horz == nil)
     {
         return nil;
-    }*/
+    }
+    
     GLint texelWidthOffset_vert = [self.vertexShaderUniforms[@"texelWidthOffset_vert"] integerValue];
     GLint texelHeightOffset_vert = [self.vertexShaderUniforms[@"texelHeightOffset_vert"] integerValue];
     
     GLint texelWidthOffset_horz = [self.vertexShaderUniforms[@"texelWidthOffset_horz"] integerValue];
     GLint texelHeightOffset_horz = [self.vertexShaderUniforms[@"texelHeightOffset_horz"] integerValue];
     
-    GLfloat texelWidthValue = aBlurRadius / rect.size.width;
-    GLfloat texelHeightValue = aBlurRadius / rect.size.height;
+    CHECK_GL_ERROR_DEBUG();
+    
+    //SHOW_PASSED_TIME(time, @"load shaders");
+    //CAPTURE_TIME(time);
+    
+    {
+        // Render texture to rTexture2 without shaders
+        CCSprite *sprite = [CCSprite spriteWithTexture:aTexture rect:rect];
+        sprite.position = CGPointMake(rTextureSize.width / 2,
+                                      rTextureSize.height / 2);
+        
+        [sprite setBlendFunc:(ccBlendFunc){ GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA }];
+        
+        [rTexture2 beginWithClear:1.0 g:1.0 b:1.0 a:0.0];
+        [sprite visit];
+        [rTexture2 end];
+    }
     
     CHECK_GL_ERROR_DEBUG();
     
-    SHOW_PASSED_TIME(time, @"load shaders");
-    CAPTURE_TIME(time);
+    //SHOW_PASSED_TIME(time, @"texture -> rTexture2");
+    //CAPTURE_TIME(time);
     
     {
-        // Render texture to rTexture1
-        CCSprite *sprite = [CCSprite spriteWithTexture:aTexture rect:rect];
-        sprite.position = CGPointMake(sprite.contentSize.width / 2,
-                                      sprite.contentSize.height / 2);
+        // Render rTexture2 to rTexture1
+        GLfloat texelWidthValue = aBlurRadiusX / (GLfloat)aTexture.pixelsWide;
+        GLfloat texelHeightValue = aBlurRadiusY / (GLfloat)aTexture.pixelsHigh;
         
-        sprite.shaderProgram = gaussianShader_vert;
+        rTexture2.sprite.position = CGPointMake(rTextureSize.width / 2,
+                                      rTextureSize.height / 2);
+        
+        rTexture2.sprite.shaderProgram = gaussianShader_vert;
         
         [gaussianShader_vert use];
         glUniform1f(texelWidthOffset_vert, texelWidthValue);
         glUniform1f(texelHeightOffset_vert, texelHeightValue);
         
-        [sprite setBlendFunc:(ccBlendFunc){ GL_ONE, GL_ZERO }];
+        [rTexture2.sprite setBlendFunc:(ccBlendFunc){ GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA }];
         
-        [rTexture1 beginWithClear:1.0 g:1.0 b:1.0 a:1.0];
-        
-        /*glClearColor(1, 0, 0, 1);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glColorMask(TRUE, TRUE, TRUE, FALSE);*/
-        [sprite visit];
-        
+        [rTexture1 beginWithClear:1.0 g:1.0 b:1.0 a:0.0];
+        [rTexture2.sprite visit];
         [rTexture1 end];
     }
     
     CHECK_GL_ERROR_DEBUG();
     
-    SHOW_PASSED_TIME(time, @"texture -> rTexture1");
-    CAPTURE_TIME(time);
+    //SHOW_PASSED_TIME(time, @"rTexture2 -> rTexture1");
+    //CAPTURE_TIME(time);
     
     {
         // Render rTexture1 to rTexture2
-        rTexture1.sprite.position = CGPointMake(rTexture1.sprite.contentSize.width / 2,
-                                                rTexture1.sprite.contentSize.height / 2);
+        GLfloat texelWidthValue = aBlurRadiusX / (GLfloat)rTexture1.sprite.texture.pixelsWide;
+        GLfloat texelHeightValue = aBlurRadiusY / (GLfloat)rTexture1.sprite.texture.pixelsHigh;
+        
+        rTexture1.sprite.position = CGPointMake(rTextureSize.width / 2,
+                                                rTextureSize.height / 2);
         
         rTexture1.sprite.shaderProgram = gaussianShader_horz;
         
@@ -135,20 +153,18 @@
         glUniform1f(texelWidthOffset_horz, texelWidthValue);
         glUniform1f(texelHeightOffset_horz, texelHeightValue);
         
-        [rTexture1.sprite setBlendFunc:(ccBlendFunc){ GL_ONE, GL_ZERO }];
+        [rTexture1.sprite setBlendFunc:(ccBlendFunc){ GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA }];
         
-        [rTexture2 begin];
-        
+        [rTexture2 beginWithClear:1.0 g:1.0 b:1.0 a:0.0];
         [rTexture1.sprite visit];
-        
         [rTexture2 end];
     }
     
     CHECK_GL_ERROR_DEBUG();
     
-    SHOW_PASSED_TIME(time, @"rTexture1 -> rTexture2");
-    CAPTURE_TIME(time);
-
+    //SHOW_PASSED_TIME(time, @"rTexture1 -> rTexture2");
+    //CAPTURE_TIME(time);
+    
     return rTexture2;
 }
 

@@ -1,10 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-//  BlurTextureConverter.h
-//  BlurShaderTest
-//
-//  Created by Gregory Maksyuk on 7/20/13.
-//  Copyright (c) 2013 Catalyst Apps. All rights reserved.
+//  GAFTextureEffectsConverter.h
 //
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -22,10 +18,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Interface
 
-@interface BlurTextureConverter : NSObject
+@interface GAFTextureEffectsConverter : NSObject
 
-+ (BlurTextureConverter *)sharedConverter;
++ (GAFTextureEffectsConverter *)sharedConverter;
 
-- (CCRenderTexture *)convertTexture:(CCTexture2D *)aTexture rect:(CGRect)rect blurRadius:(CGFloat)aBlurRadius;
+- (CCRenderTexture *)gaussianBlurredTextureFromTexture:(CCTexture2D *)aTexture
+                                                  rect:(CGRect)rect
+                                           blurRadiusX:(CGFloat)aBlurRadiusX
+                                           blurRadiusY:(CGFloat)aBlurRadiusY;
 
 @end
