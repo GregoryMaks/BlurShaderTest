@@ -25,5 +25,8 @@ void main()
     sum += texture2D(inputImageTexture, blurCoordinates[7]) * 0.09;
     sum += texture2D(inputImageTexture, blurCoordinates[8]) * 0.05;
     
+    //gl_FragColor = vec4(sum.x * sum.a, sum.y * sum.a, sum.z * sum.a, sum.a);
  	gl_FragColor = sum;
+    
+    //gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
 }

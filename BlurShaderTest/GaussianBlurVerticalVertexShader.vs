@@ -17,9 +17,9 @@ varying vec2 blurCoordinates[GAUSSIAN_SAMPLES];
 
 void main()
 {
- 	gl_Position = position;
+ 	gl_Position = CC_MVPMatrix * position;
  	textureCoordinate = inputTextureCoordinate.xy;
- 	
+ 	    
  	// Calculate the positions for the blur
  	int multiplier = 0;
  	vec2 blurStep;
@@ -30,6 +30,6 @@ void main()
  		multiplier = (i - ((GAUSSIAN_SAMPLES - 1) / 2));
         // Blur in x (horizontal)
         blurStep = float(multiplier) * singleStepOffset;
- 		blurCoordinates[i] = inputTextureCoordinate.xy + blurStep;
+ 		blurCoordinates[i] = vec2(inputTextureCoordinate.x + blurStep.x, inputTextureCoordinate.y);
  	}
 }

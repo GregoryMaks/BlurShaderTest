@@ -7,8 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		934AA2CD179BEFC200E55A0B /* GaussianBlurVertexShader.vs in Sources */ = {isa = PBXBuildFile; fileRef = 934AA2CC179BEFC200E55A0B /* GaussianBlurVertexShader.vs */; };
-		934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Sources */ = {isa = PBXBuildFile; fileRef = 934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */; };
+		932AE173179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 932AE172179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs */; };
+		934AA2CD179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 934AA2CC179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs */; };
+		934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Resources */ = {isa = PBXBuildFile; fileRef = 934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */; };
 		9393D5A4179AE73B004C6234 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A3179AE73B004C6234 /* QuartzCore.framework */; };
 		9393D5A6179AE73B004C6234 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A5179AE73B004C6234 /* OpenGLES.framework */; };
 		9393D5A8179AE73B004C6234 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A7179AE73B004C6234 /* OpenAL.framework */; };
@@ -141,13 +142,13 @@
 		9393D744179AE73E004C6234 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D743179AE73E004C6234 /* main.m */; };
 		9393D747179AE73E004C6234 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D746179AE73E004C6234 /* AppDelegate.m */; };
 		9393D74D179AE73E004C6234 /* IntroLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D74C179AE73E004C6234 /* IntroLayer.m */; };
-		9393D755179AE80F004C6234 /* BlurredSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D753179AE80E004C6234 /* BlurredSprite.m */; };
 		9393D759179AE84A004C6234 /* CCGLProgram+GAFExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D758179AE84A004C6234 /* CCGLProgram+GAFExtensions.m */; };
 		9393D75C179AEE86004C6234 /* BlurTextureConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D75B179AEE86004C6234 /* BlurTextureConverter.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		934AA2CC179BEFC200E55A0B /* GaussianBlurVertexShader.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = GaussianBlurVertexShader.vs; sourceTree = "<group>"; };
+		932AE172179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = GaussianBlurHorizontalVertexShader.vs; sourceTree = "<group>"; };
+		934AA2CC179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = GaussianBlurVerticalVertexShader.vs; sourceTree = "<group>"; };
 		934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = GaussianBlurFragmentShader.fs; sourceTree = "<group>"; };
 		9393D5A0179AE73B004C6234 /* BlurShaderTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlurShaderTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9393D5A3179AE73B004C6234 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -426,8 +427,6 @@
 		9393D746179AE73E004C6234 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9393D74B179AE73E004C6234 /* IntroLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroLayer.h; sourceTree = "<group>"; };
 		9393D74C179AE73E004C6234 /* IntroLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroLayer.m; sourceTree = "<group>"; };
-		9393D753179AE80E004C6234 /* BlurredSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlurredSprite.m; sourceTree = "<group>"; };
-		9393D754179AE80E004C6234 /* BlurredSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlurredSprite.h; sourceTree = "<group>"; };
 		9393D757179AE84A004C6234 /* CCGLProgram+GAFExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CCGLProgram+GAFExtensions.h"; sourceTree = "<group>"; };
 		9393D758179AE84A004C6234 /* CCGLProgram+GAFExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCGLProgram+GAFExtensions.m"; sourceTree = "<group>"; };
 		9393D75A179AEE86004C6234 /* BlurTextureConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlurTextureConverter.h; sourceTree = "<group>"; };
@@ -458,7 +457,8 @@
 		934AA2CB179BEFA000E55A0B /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				934AA2CC179BEFC200E55A0B /* GaussianBlurVertexShader.vs */,
+				932AE172179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs */,
+				934AA2CC179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs */,
 				934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */,
 			);
 			name = Shaders;
@@ -898,8 +898,6 @@
 			children = (
 				9393D757179AE84A004C6234 /* CCGLProgram+GAFExtensions.h */,
 				9393D758179AE84A004C6234 /* CCGLProgram+GAFExtensions.m */,
-				9393D753179AE80E004C6234 /* BlurredSprite.m */,
-				9393D754179AE80E004C6234 /* BlurredSprite.h */,
 				9393D75A179AEE86004C6234 /* BlurTextureConverter.h */,
 				9393D75B179AEE86004C6234 /* BlurTextureConverter.m */,
 			);
@@ -957,6 +955,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				934AA2CD179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs in Resources */,
+				932AE173179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs in Resources */,
+				934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Resources */,
 				9393D5BA179AE73B004C6234 /* Default.png in Resources */,
 				9393D5BC179AE73B004C6234 /* Default@2x.png in Resources */,
 				9393D5BE179AE73B004C6234 /* Default-568h@2x.png in Resources */,
@@ -1089,11 +1090,8 @@
 				9393D744179AE73E004C6234 /* main.m in Sources */,
 				9393D747179AE73E004C6234 /* AppDelegate.m in Sources */,
 				9393D74D179AE73E004C6234 /* IntroLayer.m in Sources */,
-				9393D755179AE80F004C6234 /* BlurredSprite.m in Sources */,
 				9393D759179AE84A004C6234 /* CCGLProgram+GAFExtensions.m in Sources */,
 				9393D75C179AEE86004C6234 /* BlurTextureConverter.m in Sources */,
-				934AA2CD179BEFC200E55A0B /* GaussianBlurVertexShader.vs in Sources */,
-				934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

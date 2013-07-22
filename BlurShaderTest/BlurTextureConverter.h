@@ -24,7 +24,7 @@
 
 @interface BlurTextureConverter : NSObject
 
-- (BlurTextureConverter *)sharedConverter;
++ (BlurTextureConverter *)sharedConverter;
 
 - (CCRenderTexture *)convertTexture:(CCTexture2D *)aTexture rect:(CGRect)rect blurRadius:(CGFloat)aBlurRadius;
 
