@@ -145,6 +145,12 @@
 		9393D74D179AE73E004C6234 /* IntroLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D74C179AE73E004C6234 /* IntroLayer.m */; };
 		9393D759179AE84A004C6234 /* CCGLProgram+GAFExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D758179AE84A004C6234 /* CCGLProgram+GAFExtensions.m */; };
 		9393D75C179AEE86004C6234 /* GAFTextureEffectsConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = 9393D75B179AEE86004C6234 /* GAFTextureEffectsConverter.m */; };
+		93B01346179E851E00A77E38 /* BoxBlurHorizontalVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 93B01345179E851E00A77E38 /* BoxBlurHorizontalVertexShader.vs */; };
+		93B01348179E852C00A77E38 /* BoxBlurFragmentShader.fs in Resources */ = {isa = PBXBuildFile; fileRef = 93B01347179E852C00A77E38 /* BoxBlurFragmentShader.fs */; };
+		93B01397179EB4B500A77E38 /* BoxBlurVerticalVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 93B01396179EB4B500A77E38 /* BoxBlurVerticalVertexShader.vs */; };
+		93B0139B179F001000A77E38 /* RealBoxBlurVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 93B01398179F000F00A77E38 /* RealBoxBlurVertexShader.vs */; };
+		93B013A0179F004D00A77E38 /* RealBoxBlurFragmentShader_vert.fs in Resources */ = {isa = PBXBuildFile; fileRef = 93B0139E179F004A00A77E38 /* RealBoxBlurFragmentShader_vert.fs */; };
+		93B013A1179F004D00A77E38 /* RealBoxBlurFragmentShader_horz.fs in Resources */ = {isa = PBXBuildFile; fileRef = 93B0139F179F004B00A77E38 /* RealBoxBlurFragmentShader_horz.fs */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -433,6 +439,12 @@
 		9393D758179AE84A004C6234 /* CCGLProgram+GAFExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CCGLProgram+GAFExtensions.m"; sourceTree = "<group>"; };
 		9393D75A179AEE86004C6234 /* GAFTextureEffectsConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAFTextureEffectsConverter.h; sourceTree = "<group>"; };
 		9393D75B179AEE86004C6234 /* GAFTextureEffectsConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GAFTextureEffectsConverter.m; sourceTree = "<group>"; };
+		93B01345179E851E00A77E38 /* BoxBlurHorizontalVertexShader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BoxBlurHorizontalVertexShader.vs; sourceTree = "<group>"; };
+		93B01347179E852C00A77E38 /* BoxBlurFragmentShader.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BoxBlurFragmentShader.fs; sourceTree = "<group>"; };
+		93B01396179EB4B500A77E38 /* BoxBlurVerticalVertexShader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = BoxBlurVerticalVertexShader.vs; sourceTree = "<group>"; };
+		93B01398179F000F00A77E38 /* RealBoxBlurVertexShader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = RealBoxBlurVertexShader.vs; sourceTree = "<group>"; };
+		93B0139E179F004A00A77E38 /* RealBoxBlurFragmentShader_vert.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = RealBoxBlurFragmentShader_vert.fs; sourceTree = "<group>"; };
+		93B0139F179F004B00A77E38 /* RealBoxBlurFragmentShader_horz.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = RealBoxBlurFragmentShader_horz.fs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -462,6 +474,12 @@
 				932AE172179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs */,
 				934AA2CC179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs */,
 				934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */,
+				93B01396179EB4B500A77E38 /* BoxBlurVerticalVertexShader.vs */,
+				93B01345179E851E00A77E38 /* BoxBlurHorizontalVertexShader.vs */,
+				93B01347179E852C00A77E38 /* BoxBlurFragmentShader.fs */,
+				93B01398179F000F00A77E38 /* RealBoxBlurVertexShader.vs */,
+				93B0139E179F004A00A77E38 /* RealBoxBlurFragmentShader_vert.fs */,
+				93B0139F179F004B00A77E38 /* RealBoxBlurFragmentShader_horz.fs */,
 			);
 			name = Shaders;
 			sourceTree = "<group>";
@@ -958,6 +976,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				93B01346179E851E00A77E38 /* BoxBlurHorizontalVertexShader.vs in Resources */,
+				93B0139B179F001000A77E38 /* RealBoxBlurVertexShader.vs in Resources */,
+				93B013A0179F004D00A77E38 /* RealBoxBlurFragmentShader_vert.fs in Resources */,
+				93B013A1179F004D00A77E38 /* RealBoxBlurFragmentShader_horz.fs in Resources */,
+				93B01348179E852C00A77E38 /* BoxBlurFragmentShader.fs in Resources */,
+				93B01397179EB4B500A77E38 /* BoxBlurVerticalVertexShader.vs in Resources */,
 				934AA2CD179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs in Resources */,
 				932AE173179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs in Resources */,
 				934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Resources */,

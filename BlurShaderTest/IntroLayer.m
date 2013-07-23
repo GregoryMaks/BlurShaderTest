@@ -40,7 +40,8 @@
         CCLayerColor *colorLayer = [[CCLayerColor alloc] initWithColor:ccc4(128, 128, 128, 255)];
         [self addChild:colorLayer];
         
-        CGImageRef image = [[UIImage imageNamed:@"Test.png"] CGImage];
+        //CGImageRef image = [[UIImage imageNamed:@"Test.png"] CGImage];
+        CGImageRef image = [[UIImage imageNamed:@"Default.png"] CGImage];
         CCTexture2D *tex = [[CCTexture2D alloc] initWithCGImage:image resolutionType:kCCResolutioniPad];
         
         CCSprite *sprite1 = [CCSprite spriteWithTexture:tex];
@@ -48,12 +49,12 @@
         [self addChild:sprite1];
         
         GAFTextureEffectsConverter *converter = [GAFTextureEffectsConverter sharedConverter];
-        for (int a = 0; a < 1; a ++)
+        for (int a = 0; a < 10; a ++)
         {
-            CCRenderTexture *resultTex = [converter gaussianBlurredTextureFromTexture:tex
-                                                                                 rect:CGRectMake(0, 0, tex.contentSize.width, tex.contentSize.height)
-                                                                          blurRadiusX:2
-                                                                          blurRadiusY:2];
+            CCRenderTexture *resultTex = [converter box2BlurredTextureFromTexture:tex
+                                                                            rect:CGRectMake(0, 0, tex.contentSize.width, tex.contentSize.height)
+                                                                     blurRadiusX:2
+                                                                     blurRadiusY:2];
             if (resultTex != nil)
             {
                 CCSprite *sprite2 = [CCSprite spriteWithTexture:resultTex.sprite.texture];
