@@ -7,9 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		932AE173179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 932AE172179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs */; };
+		932AE173179D414A0087731A /* GaussianBlurVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 932AE172179D414A0087731A /* GaussianBlurVertexShader.vs */; };
 		932AE179179D760D0087731A /* Test.png in Resources */ = {isa = PBXBuildFile; fileRef = 932AE178179D760D0087731A /* Test.png */; };
-		934AA2CD179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs in Resources */ = {isa = PBXBuildFile; fileRef = 934AA2CC179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs */; };
 		934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Resources */ = {isa = PBXBuildFile; fileRef = 934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */; };
 		9393D5A4179AE73B004C6234 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A3179AE73B004C6234 /* QuartzCore.framework */; };
 		9393D5A6179AE73B004C6234 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9393D5A5179AE73B004C6234 /* OpenGLES.framework */; };
@@ -154,9 +153,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		932AE172179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = GaussianBlurHorizontalVertexShader.vs; sourceTree = "<group>"; };
+		932AE172179D414A0087731A /* GaussianBlurVertexShader.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = GaussianBlurVertexShader.vs; sourceTree = "<group>"; };
 		932AE178179D760D0087731A /* Test.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Test.png; sourceTree = "<group>"; };
-		934AA2CC179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = GaussianBlurVerticalVertexShader.vs; sourceTree = "<group>"; };
 		934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */ = {isa = PBXFileReference; explicitFileType = sourcecode.glsl; fileEncoding = 4; path = GaussianBlurFragmentShader.fs; sourceTree = "<group>"; };
 		9393D5A0179AE73B004C6234 /* BlurShaderTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlurShaderTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9393D5A3179AE73B004C6234 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -471,8 +469,7 @@
 		934AA2CB179BEFA000E55A0B /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				932AE172179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs */,
-				934AA2CC179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs */,
+				932AE172179D414A0087731A /* GaussianBlurVertexShader.vs */,
 				934AA2CE179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs */,
 				93B01396179EB4B500A77E38 /* BoxBlurVerticalVertexShader.vs */,
 				93B01345179E851E00A77E38 /* BoxBlurHorizontalVertexShader.vs */,
@@ -982,8 +979,7 @@
 				93B013A1179F004D00A77E38 /* RealBoxBlurFragmentShader_horz.fs in Resources */,
 				93B01348179E852C00A77E38 /* BoxBlurFragmentShader.fs in Resources */,
 				93B01397179EB4B500A77E38 /* BoxBlurVerticalVertexShader.vs in Resources */,
-				934AA2CD179BEFC200E55A0B /* GaussianBlurVerticalVertexShader.vs in Resources */,
-				932AE173179D414A0087731A /* GaussianBlurHorizontalVertexShader.vs in Resources */,
+				932AE173179D414A0087731A /* GaussianBlurVertexShader.vs in Resources */,
 				934AA2CF179BEFEA00E55A0B /* GaussianBlurFragmentShader.fs in Resources */,
 				9393D5BA179AE73B004C6234 /* Default.png in Resources */,
 				9393D5BC179AE73B004C6234 /* Default@2x.png in Resources */,

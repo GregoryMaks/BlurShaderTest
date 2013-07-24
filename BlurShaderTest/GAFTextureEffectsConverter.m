@@ -67,37 +67,34 @@
 {
     const int kGaussianKernelSize = 9;
     
+    aBlurRadiusX /= (float)kGaussianKernelSize;
+    aBlurRadiusY /= (float)kGaussianKernelSize;
+    
     CGSize rTextureSize = CGSizeMake(rect.size.width + 2 * (kGaussianKernelSize / 2) * aBlurRadiusX,
                                      rect.size.height + 2 * (kGaussianKernelSize / 2) * aBlurRadiusY);
     
     CCRenderTexture *rTexture1 = [CCRenderTexture renderTextureWithWidth:rTextureSize.width height:rTextureSize.height];
     CCRenderTexture *rTexture2 = [CCRenderTexture renderTextureWithWidth:rTextureSize.width height:rTextureSize.height];
     
-    //NSTimeInterval time = 0;
-    //CAPTURE_TIME(time);
+    NSTimeInterval time = 0;
+    CAPTURE_TIME(time);
     
     // Loading shader
-    CCGLProgram *shader_vert = [self programForBlurShaderWithName:@"GaussianBlur_Vertical"
-                                                 vertexShaderFile:@"GaussianBlurVerticalVertexShader.vs"
+    CCGLProgram *shader = [self programForBlurShaderWithName:@"GaussianBlur"
+                                                 vertexShaderFile:@"GaussianBlurVertexShader.vs"
                                                fragmentShaderFile:@"GaussianBlurFragmentShader.fs"];
-    CCGLProgram *shader_horz = [self programForBlurShaderWithName:@"GaussianBlur_Horizontal"
-                                                 vertexShaderFile:@"GaussianBlurHorizontalVertexShader.vs"
-                                               fragmentShaderFile:@"GaussianBlurFragmentShader.fs"];
-    if (shader_vert == nil || shader_horz == nil)
+    if (shader == nil)
     {
         return nil;
     }
     
-    GLint texelWidthOffset_vert = (GLint)glGetUniformLocation(shader_vert->_program, "texelWidthOffset");
-    GLint texelHeightOffset_vert = (GLint)glGetUniformLocation(shader_vert->_program, "texelHeightOffset");
-    
-    GLint texelWidthOffset_horz = (GLint)glGetUniformLocation(shader_horz->_program, "texelWidthOffset");
-    GLint texelHeightOffset_horz = (GLint)glGetUniformLocation(shader_horz->_program, "texelHeightOffset");
+    GLint texelWidthOffset = (GLint)glGetUniformLocation(shader->_program, "texelWidthOffset");
+    GLint texelHeightOffset = (GLint)glGetUniformLocation(shader->_program, "texelHeightOffset");
     
     CHECK_GL_ERROR_DEBUG();
     
-    //SHOW_PASSED_TIME(time, @"load shaders");
-    //CAPTURE_TIME(time);
+    SHOW_PASSED_TIME(time, @"load shaders");
+    CAPTURE_TIME(time);
     
     {
         // Render texture to rTexture2 without shaders
@@ -114,22 +111,22 @@
     
     CHECK_GL_ERROR_DEBUG();
     
-    //SHOW_PASSED_TIME(time, @"texture -> rTexture2");
-    //CAPTURE_TIME(time);
+    SHOW_PASSED_TIME(time, @"texture -> rTexture2");
+    CAPTURE_TIME(time);
     
     {
-        // Render rTexture2 to rTexture1
+        // Render rTexture2 to rTexture1 (horizontal)
         GLfloat texelWidthValue = aBlurRadiusX / (GLfloat)rTextureSize.width;
-        GLfloat texelHeightValue = aBlurRadiusY / (GLfloat)rTextureSize.height;
+        GLfloat texelHeightValue = 0;
         
         rTexture2.sprite.position = CGPointMake(rTextureSize.width / 2,
                                                 rTextureSize.height / 2);
         
-        rTexture2.sprite.shaderProgram = shader_vert;
+        rTexture2.sprite.shaderProgram = shader;
         
-        [shader_vert use];
-        glUniform1f(texelWidthOffset_vert, texelWidthValue);
-        glUniform1f(texelHeightOffset_vert, texelHeightValue);
+        [shader use];
+        glUniform1f(texelWidthOffset, texelWidthValue);
+        glUniform1f(texelHeightOffset, texelHeightValue);
         
         [rTexture2.sprite setBlendFunc:(ccBlendFunc){ GL_ONE, GL_ZERO }];
         
@@ -140,22 +137,22 @@
     
     CHECK_GL_ERROR_DEBUG();
     
-    //SHOW_PASSED_TIME(time, @"rTexture2 -> rTexture1");
-    //CAPTURE_TIME(time);
+    SHOW_PASSED_TIME(time, @"rTexture2 -> rTexture1");
+    CAPTURE_TIME(time);
     
     {
-        // Render rTexture1 to rTexture2
-        GLfloat texelWidthValue = aBlurRadiusX / (GLfloat)rTextureSize.width;
+        // Render rTexture1 to rTexture2 (vertical)
+        GLfloat texelWidthValue = 0;
         GLfloat texelHeightValue = aBlurRadiusY / (GLfloat)rTextureSize.height;
         
         rTexture1.sprite.position = CGPointMake(rTextureSize.width / 2,
                                                 rTextureSize.height / 2);
         
-        rTexture1.sprite.shaderProgram = shader_horz;
+        rTexture1.sprite.shaderProgram = shader;
         
-        [shader_horz use];
-        glUniform1f(texelWidthOffset_horz, texelWidthValue);
-        glUniform1f(texelHeightOffset_horz, texelHeightValue);
+        [shader use];
+        glUniform1f(texelWidthOffset, texelWidthValue);
+        glUniform1f(texelHeightOffset, texelHeightValue);
         
         [rTexture1.sprite setBlendFunc:(ccBlendFunc){ GL_ONE, GL_ZERO }];
         
@@ -166,9 +163,9 @@
     
     CHECK_GL_ERROR_DEBUG();
     
-    //SHOW_PASSED_TIME(time, @"rTexture1 -> rTexture2");
+    SHOW_PASSED_TIME(time, @"rTexture1 -> rTexture2");
     
-    return rTexture2;
+    return rTexture1;
 }
 
 - (CCRenderTexture *)boxBlurredTextureFromTexture:(CCTexture2D *)aTexture
@@ -336,7 +333,7 @@
     
     {
         // Render rTexture2 to rTexture1
-        GLfloat texelOffsetValue = 1.0 / (GLfloat)rTextureSize.height;
+        GLfloat texelOffsetValue = 10.0 / (GLfloat)rTextureSize.height;
         
         rTexture2.sprite.position = CGPointMake(rTextureSize.width / 2,
                                                 rTextureSize.height / 2);
@@ -361,7 +358,7 @@
     
     {
         // Render rTexture1 to rTexture2
-        GLfloat texelOffsetValue = 1.0 / (GLfloat)rTextureSize.width;
+        GLfloat texelOffsetValue = 10.0 / (GLfloat)rTextureSize.width;
         
         rTexture1.sprite.position = CGPointMake(rTextureSize.width / 2,
                                                 rTextureSize.height / 2);
@@ -383,7 +380,6 @@
     
     SHOW_PASSED_TIME(time, @"rTexture1 -> rTexture2");
     
-    //return rTexture1;
     return rTexture2;
 }
 

@@ -28,8 +28,8 @@ void main()
  	for (int i = 0; i < GAUSSIAN_SAMPLES; i++)
     {
  		multiplier = (i - ((GAUSSIAN_SAMPLES - 1) / 2));
-        // Blur in x (horizontal)
+
         blurStep = float(multiplier) * singleStepOffset;
- 		blurCoordinates[i] = vec2(inputTextureCoordinate.x + blurStep.x, inputTextureCoordinate.y);
+ 		blurCoordinates[i] = inputTextureCoordinate.xy + blurStep;
  	}
 }

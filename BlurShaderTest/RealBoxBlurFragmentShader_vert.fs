@@ -1,3 +1,9 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Real Box blur
+//
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 precision highp float;
 
 uniform sampler2D inputImageTexture;
@@ -12,8 +18,8 @@ int counter;
 
 void main()
 {
-    lowp vec4 fragmentColor = vec4(0, 0, 0, 0);
-    lowp float samplesCoeff = 1.0 / float(samplesCount);
+    vec4 fragmentColor = vec4(0, 0, 0, 0);
+    float samplesCoeff = 1.0 / float(samplesCount);
     
     for (i = centerTextureCoordinate.y - offset * float((samplesCount - 1) / 2);
          i <= centerTextureCoordinate.y + offset * float((samplesCount - 1) / 2);

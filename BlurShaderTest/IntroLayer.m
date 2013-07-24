@@ -49,12 +49,12 @@
         [self addChild:sprite1];
         
         GAFTextureEffectsConverter *converter = [GAFTextureEffectsConverter sharedConverter];
-        for (int a = 0; a < 10; a ++)
+        for (int a = 0; a < 1; a ++)
         {
-            CCRenderTexture *resultTex = [converter box2BlurredTextureFromTexture:tex
-                                                                            rect:CGRectMake(0, 0, tex.contentSize.width, tex.contentSize.height)
-                                                                     blurRadiusX:2
-                                                                     blurRadiusY:2];
+            CCRenderTexture *resultTex = [converter gaussianBlurredTextureFromTexture:tex
+                                                                                 rect:CGRectMake(0, 0, tex.contentSize.width, tex.contentSize.height)
+                                                                          blurRadiusX:9
+                                                                          blurRadiusY:9];
             if (resultTex != nil)
             {
                 CCSprite *sprite2 = [CCSprite spriteWithTexture:resultTex.sprite.texture];
